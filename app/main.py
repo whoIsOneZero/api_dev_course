@@ -3,17 +3,30 @@ from fastapi import FastAPI, Response, status, HTTPException
 from fastapi.params import Body
 from pydantic import BaseModel
 from random import randrange
+import psycopg
+from psycopg.rows import dict_row
+import time
 
 app = FastAPI()
-
-# Schema
 
 
 class Post(BaseModel):
     title: str
     content: str
     published: bool = True
-    rating: Optional[int] = None
+
+
+while True:
+    try:
+        conn = psycopg.connect(dbname='social_media_fastapi', user='postgres',
+                               host='localhost', password='password1', row_factory=dict_row)
+        cursor = conn.cursor()
+        print("Database connection successful")
+        break
+    except Exception as error:
+        print("Connection to database failed")
+        print(f"Error: {error}")
+        time.sleep(2)
 
 
 my_posts = [{"title": "Title of Post 1",
@@ -41,11 +54,13 @@ def read_root():
 
 @app.get("/posts")
 def get_posts():
-    return {"data": my_posts}
+    cursor.execute("""SELECT * FROM posts""")
+    posts = cursor.fetchall()
+
+    return {"data": posts}
+
 
 # default status code
-
-
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
 def create_post(new_post: Post):
     post_dict = new_post.model_dump()
