@@ -8,19 +8,11 @@ from psycopg.rows import dict_row
 import time
 from models import models
 from sqlalchemy.orm import Session
-from database.db import engine, SessionLocal
+from database.db import engine, get_db
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 class Post(BaseModel):
@@ -49,13 +41,17 @@ def read_root():
 
 @app.get("/sqlalchemy")
 def test_posts(db: Session = Depends(get_db)):
-    return {"status": "success"}
+
+    posts = db.query(models.Post).all()
+    return {"data": posts}
 
 
 @app.get("/posts")
-def get_posts():
-    cursor.execute("""SELECT * FROM posts""")
-    posts = cursor.fetchall()
+def get_posts(db: Session = Depends(get_db)):
+    # cursor.execute("""SELECT * FROM posts""")
+    # posts = cursor.fetchall()
+
+    posts = db.query(models.Post).all()
 
     return {"data": posts}
 
