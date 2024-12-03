@@ -6,9 +6,9 @@ from random import randrange
 import psycopg
 from psycopg.rows import dict_row
 import time
-from . import models
+from models import models
 from sqlalchemy.orm import Session
-from database import engine, SessionLocal
+from database.db import engine, SessionLocal
 
 models.Base.metadata.create_all(bind=engine)
 
