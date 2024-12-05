@@ -5,10 +5,12 @@ from schemas import schemas
 from sqlalchemy.orm import Session
 from database.db import get_db
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/users"
+)
 
 
-@router.post("/users", response_model=schemas.UserResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=schemas.UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
     # hash the password
@@ -24,7 +26,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return new_user
 
 
-@router.get("/users/{id}", response_model=schemas.UserResponse)
+@router.get("/{id}", response_model=schemas.UserResponse)
 def get_user(id: int, db: Session = Depends(get_db)):
 
     user = db.query(models.User).filter(models.User.id == id).first()
