@@ -3,6 +3,7 @@ from database import utils
 from models import models
 from schemas import schemas
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from database.db import get_db
 
 router = APIRouter(
@@ -20,9 +21,16 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
     new_user = models.User(
         **user.model_dump())
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
+
+    try:
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+    except IntegrityError:
+        # rollback the transaction
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Email already taken.")
 
     return new_user
 
