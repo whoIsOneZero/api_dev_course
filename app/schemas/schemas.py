@@ -33,10 +33,12 @@ class Post(PostBase):
     Attributes:
         id (int): The unique identifier for the post.
         created_at (datetime): The timestamp when the post was created.
+        owner_id (int): ID of the creator of the post
     """
 
     id: int
     created_at: datetime
+    owner_id: int
 
     class Config:
         """
@@ -115,6 +117,6 @@ class TokenData(BaseModel):
     Attributes:
         id (Optional[Union[str, int]]): The user's ID, which can be a string or an integer.
     """
-    
+
     # handle as integer and string
     id: Optional[Union[str, int]] = None
