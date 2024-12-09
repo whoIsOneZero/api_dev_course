@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from database.db import Base
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
+from sqlalchemy.orm import relationship
 
 
 class Post(Base):
@@ -15,6 +16,8 @@ class Post(Base):
                         server_default=text('now()'), nullable=False)
     owner_id = Column(Integer, ForeignKey(
         "users.id", ondelete="CASCADE"), nullable=False)
+    # return that class
+    owner = relationship("User")
 
 
 class User(Base):

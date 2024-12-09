@@ -25,6 +25,21 @@ class PostCreate(PostBase):
     pass
 
 
+class UserResponse(BaseModel):
+    """
+    Schema for user response, including metadata - ID and creation time.
+
+    Attributes:
+        id (int): The unique identifier for the user.
+        email (EmailStr): The user's email address.
+        created_at (datetime): The timestamp when the user was created.
+    """
+
+    id: int
+    email: EmailStr
+    created_at: datetime
+
+
 # response
 class Post(PostBase):
     """
@@ -39,6 +54,7 @@ class Post(PostBase):
     id: int
     created_at: datetime
     owner_id: int
+    owner: UserResponse
 
     class Config:
         """
@@ -60,21 +76,6 @@ class UserCreate(BaseModel):
 
     email: EmailStr
     password: str
-
-
-class UserResponse(BaseModel):
-    """
-    Schema for user response, including metadata - ID and creation time.
-
-    Attributes:
-        id (int): The unique identifier for the user.
-        email (EmailStr): The user's email address.
-        created_at (datetime): The timestamp when the user was created.
-    """
-
-    id: int
-    email: EmailStr
-    created_at: datetime
 
     class Config:
         """

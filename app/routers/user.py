@@ -50,6 +50,21 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @router.get("/{id}", response_model=schemas.UserResponse)
 def get_user(id: int, db: Session = Depends(get_db)):
+    """
+    Retrieve a user by their ID.
+
+    Args:
+        id (int): The unique identifier of the user.
+        db (Session): The database session dependency.
+
+    Returns:
+        schemas.UserResponse: The user data if found.
+
+    Raises:
+        HTTPException: If the user with the specified ID does not exist.
+            - Status Code: 404
+            - Detail: "user with id: {id} does not exist"
+    """
     
     user = db.query(models.User).filter(models.User.id == id).first()
 
