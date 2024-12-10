@@ -66,6 +66,19 @@ class Post(PostBase):
         from_attributes = True
 
 
+class PostOut(PostBase):
+    Post: Post
+    votes: int
+
+    class Config:
+        """
+        Configuration for enabling attribute-based ORM mode, which allows
+        compatibility with database models.
+        """
+
+        from_attributes = True
+
+
 class UserCreate(BaseModel):
     """
     Schema for creating a new user.
