@@ -66,7 +66,7 @@ class Post(PostBase):
         from_attributes = True
 
 
-class PostOut(PostBase):
+class PostOut(BaseModel):
     Post: Post
     votes: int
 
