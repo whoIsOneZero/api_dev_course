@@ -3,7 +3,7 @@ from app.database import utils
 from app.models import models
 from app.schemas import schemas
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from app.database.db import get_db
 
 router = APIRouter(
@@ -44,6 +44,19 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Email already taken.")
+    except SQLAlchemyError as e:
+        # Rollback and raise generic database error
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An unexpected database error occurred."
+        )
+    except Exception as e:
+        # Catch all other unexpected exceptions
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An unexpected error occurred."
+        )
 
     return new_user
 
