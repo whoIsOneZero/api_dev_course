@@ -1,0 +1,20 @@
+# Exported from Render on 2024-12-19T22:47:23Z
+services:
+- type: web
+  name: social_media-fastapi
+  runtime: python
+  repo: https://github.com/whoIsOneZero/api_dev_course
+  plan: free
+  envVars:
+  - key: DATABASE_URL
+    sync: false
+  - key: ACCESS_TOKEN_EXPIRE_MINUTES
+    sync: false
+  - key: ALGORITHM
+    sync: false
+  - key: SECRET_KEY
+    sync: false
+  region: oregon
+  buildCommand: pip install -r requirements.txt
+  startCommand: uvicorn app.main:app --host 0.0.0.0
+version: "1"
