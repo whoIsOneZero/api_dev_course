@@ -1,5 +1,6 @@
 # from pydantic import BaseSettings
 from pydantic_settings import BaseSettings
+from typing import Optional
 
 
 class Settings(BaseSettings):
@@ -7,12 +8,12 @@ class Settings(BaseSettings):
     Performs validation to see if all these env variables have been set
     """
 
-    database_hostname: str
-    database_port: str
-    database_password: str
-    database_name: str
-    database_username: str
-    # database_url: str
+    database_hostname: Optional[str] = None
+    database_port: Optional[str] = None
+    database_password: Optional[str] = None
+    database_name: Optional[str] = None
+    database_username: Optional[str] = None
+    database_url: Optional[str] = None
     secret_key: str
     algorithm: str
     access_token_expire_minutes: int
