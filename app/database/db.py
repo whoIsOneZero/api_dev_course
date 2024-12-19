@@ -11,11 +11,11 @@ from app.config import settings
 """
 
 SQLALCHEMY_DATABASE_URL = (
-    settings.database_url 
+    settings.database_url
     if settings.database_url
     else
     f'postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}/{settings.database_name}'
-    )
+)
 
 # SQLALCHEMY_DATABASE_URL = settings.database_url
 
