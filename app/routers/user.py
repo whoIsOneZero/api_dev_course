@@ -5,6 +5,9 @@ from app.schemas import schemas
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from app.database.db import get_db
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/users",
@@ -52,7 +55,8 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
             detail="An unexpected database error occurred."
         )
     except Exception as e:
-        # Catch all other unexpected exceptions
+        # Log the unexpected error
+        logger.error(f"Unexpected Error: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected error occurred."
