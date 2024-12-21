@@ -5,14 +5,15 @@ from app.schemas import schemas
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from app.database.db import get_db
-import logging
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-handler = logging.StreamHandler()  # Logs will be output to the console
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+# import logging
+
+# logger = logging.getLogger(__name__)
+# logger.setLevel(logging.DEBUG)
+# handler = logging.StreamHandler()  # Logs will be output to the console
+# formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# handler.setFormatter(formatter)
+# logger.addHandler(handler)
 
 
 router = APIRouter(
@@ -62,7 +63,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         )
     except Exception as e:
         # Log the unexpected error
-        logger.error(f"Unexpected Error: {str(e)}")
+        # logger.error(f"Unexpected Error: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected error occurred."
